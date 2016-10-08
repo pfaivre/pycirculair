@@ -102,7 +102,7 @@ def calc_vit_PL(vitesse_vl, Taux_congestion, liste_facteur_correct, cat_voie):
 		correc_vitesse_PL = liste_facteur_correct[cat_voie - 1][7]
 
 	if vitesse_vl + correc_vitesse_PL >= 110 :
-		Vitesse_PL = 140
+		Vitesse_PL = 110
 	elif vitesse_vl + correc_vitesse_PL <= 10 :
 		Vitesse_PL = 10
 	else:
@@ -121,7 +121,7 @@ def calc_vit_Bus(vitesse_vl, Taux_congestion, liste_facteur_correct, cat_voie):
 		correc_vitesse_Bus = liste_facteur_correct[cat_voie - 1][11]
 
 	if vitesse_vl + correc_vitesse_Bus >= 50 :
-		Vitesse_Bus = 140
+		Vitesse_Bus = 50
 	elif vitesse_vl + correc_vitesse_Bus <= 10 :
 		Vitesse_Bus = 10
 	else:
@@ -141,7 +141,7 @@ def calc_vit_Autocar(vitesse_vl, Taux_congestion, liste_facteur_correct, cat_voi
 		correc_vitesse_Autocar = liste_facteur_correct[cat_voie - 1][15]
 
 	if vitesse_vl + correc_vitesse_Autocar >= 120 :
-		Vitesse_Car = 140
+		Vitesse_Car = 120
 	elif vitesse_vl + correc_vitesse_Autocar <= 10 :
 		Vitesse_Car = 10
 	else:

@@ -54,7 +54,7 @@ def calc_vmax(cat_voie):
 
 #### par defaut en attendant des vraies valeurs
 
-def data_vitesse(ligne):
+def imp_data_vitesse(ligne):
 	'''a metrre bien sur a jour pour que ca recherche dans les bases de donnees'''
 
 	prof_mensu_DF = [0.0339122241, 0.0371614244, 0.0339833616, 0.0346645706, 0.0342286425, 0.0345905557, 0.0340547981, 0.0336714411, 0.0345905557, 0.0338119936, 0.0345905557, 0.0338119936]
