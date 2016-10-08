@@ -47,10 +47,10 @@ def calc_taux_congestion(Coef_charge):
 
 def vitesse_brute(Coef_charge, Vmax, Coef_route, B, Bbis):
 	#vitesse_brute
-	if coef_charge < 1:
-		vitesse_brute = 1/ ((1/Vmax)*(1+coef_route*(Coef_charge**B)))
+	if Coef_charge < 1:
+		vitesse_brute = 1/ ((1/Vmax)*(1+Coef_route*(Coef_charge**B)))
 	else:
-		vitesse_brute = 1/ ((1/Vmax)*(1+coef_route*(Coef_charge**Bbis)))
+		vitesse_brute = 1/ ((1/Vmax)*(1+Coef_route*(Coef_charge**Bbis)))
 	return(vitesse_brute)
 
 def calc_vitesse_vl(vitesse_brute):
@@ -71,7 +71,7 @@ def calc_vit_motoinf50(vitesse_brute):
 		Vitesse_moto_inf50 = vitesse_brute
 	return(Vitesse_moto_inf50)
 
-def calc_vit_motosup50(Vitesse_vl, Taux_congestion, liste_facteur_corect):
+def calc_vit_motosup50(vitesse_vl, Taux_congestion, liste_facteur_correct, cat_voie):
 
 	if Taux_congestion < 40:
 		correc_vitesse_moto =  liste_facteur_correct[cat_voie - 1][0]
@@ -87,10 +87,10 @@ def calc_vit_motosup50(Vitesse_vl, Taux_congestion, liste_facteur_corect):
 	elif vitesse_vl + correc_vitesse_moto <= 10 :
 		Vitesse_moto_sup50 = 10
 	else:
-		Vitesse_moto_inf50 = vitesse_vl + correc_vitesse_moto
+		Vitesse_moto_sup50 = vitesse_vl + correc_vitesse_moto
 	return(Vitesse_moto_sup50)
 
-def calc_vit_PL(Vitesse_vl, Taux_congestion, liste_facteur_corect):
+def calc_vit_PL(vitesse_vl, Taux_congestion, liste_facteur_correct, cat_voie):
 
 	if Taux_congestion < 40:
 		correc_vitesse_PL = liste_facteur_correct[cat_voie - 1][4]
@@ -109,7 +109,7 @@ def calc_vit_PL(Vitesse_vl, Taux_congestion, liste_facteur_corect):
 		Vitesse_PL = vitesse_vl + correc_vitesse_PL
 	return(Vitesse_PL)
 
-def calc_vit_Bus(Vitesse_vl, Taux_congestion, liste_facteur_corect):
+def calc_vit_Bus(vitesse_vl, Taux_congestion, liste_facteur_correct, cat_voie):
 
 	if Taux_congestion < 40:
 		correc_vitesse_Bus = liste_facteur_correct[cat_voie - 1][8]
@@ -129,7 +129,7 @@ def calc_vit_Bus(Vitesse_vl, Taux_congestion, liste_facteur_corect):
 	return(Vitesse_Bus)
 
 
-def calc_vit_Autocar(Vitesse_vl, Taux_congestion, liste_facteur_corect):
+def calc_vit_Autocar(vitesse_vl, Taux_congestion, liste_facteur_correct, cat_voie):
 
 	if Taux_congestion < 40:
 		correc_vitesse_Autocar = liste_facteur_correct[cat_voie - 1][12]
@@ -140,12 +140,12 @@ def calc_vit_Autocar(Vitesse_vl, Taux_congestion, liste_facteur_corect):
 	elif Taux_congestion > 100:
 		correc_vitesse_Autocar = liste_facteur_correct[cat_voie - 1][15]
 
-	if vitesse_vl + correc_vitesse_Car >= 120 :
+	if vitesse_vl + correc_vitesse_Autocar >= 120 :
 		Vitesse_Car = 140
-	elif vitesse_vl + correc_vitesse_Car <= 10 :
+	elif vitesse_vl + correc_vitesse_Autocar <= 10 :
 		Vitesse_Car = 10
 	else:
-		Vitesse_Car = vitesse_vl + correc_vitesse_Car
+		Vitesse_Car = vitesse_vl + correc_vitesse_Autocar
 	return(Vitesse_Car)
 
 ####################################################################################
@@ -171,13 +171,13 @@ def tableau_coef_charge(TMJA, prof_mensu_PL, prof_horr_PL, prof_mensu, prof_horr
 			Nombre_VUL_h= Nombre_VL_h * Pct_Vul
 			Nombre_VP_h = Nombre_VL_h - Nombre_VUL_h
 			Nombre_BUS_h = nbr_vref * Pct_Bus
-			Nombre_AUTOCAR_h = Nombre_Vref_h_jo * Pct_Autocar
+			Nombre_AUTOCAR_h = nbr_vref * Pct_Autocar
 			
-			coef_charge = calc_coef_charge(Nombre_VUL_h, Nombre_VP_h, Nombre_PL_h, Nombre_BUS_h, Nombre_AUTOCAR_h, UnsurCapacite)
+			coef_charge = calc_coef_charge(Nombre_VUL_h, Nombre_VP_h, nbr_pl, Nombre_BUS_h, Nombre_AUTOCAR_h, UnsurCapacite)
 			
 			liste_coefC_h.append(coef_charge)
 		liste_CoefC_annee.append(liste_coefC_h)
-	return(liste_coefC_annee)
+	return(liste_CoefC_annee)
 
 
 def tableau_vitesse_brute(liste_coefC_annee, Vmax, Coef_route, B, Bbis):
@@ -185,10 +185,10 @@ def tableau_vitesse_brute(liste_coefC_annee, Vmax, Coef_route, B, Bbis):
 	for mois in range(12):
 		liste_vitesse_brute_h = []
 		for heure in range(24):
-			Coef_charge = liste_coefC_annee[mois][heure]
-			vitesse_brute = vitesse_brute(coef_charge, Vmax, Coef_route, B, Bbis)
-			liste_vitesse_brute_h.appen(vitesse_brute)
-		liste_vitesse_brute_annee.appen(liste_vitesse_brute_h)
+			coef_charge = liste_coefC_annee[mois][heure]
+			Vitesse_brute = vitesse_brute(coef_charge, Vmax, Coef_route, B, Bbis)
+			liste_vitesse_brute_h.append(Vitesse_brute)
+		liste_vitesse_brute_annee.append(liste_vitesse_brute_h)
 	return(liste_vitesse_brute_annee)
 
 def tableau_vitesse_vl(liste_vitesse_brute_annee):
@@ -197,8 +197,8 @@ def tableau_vitesse_vl(liste_vitesse_brute_annee):
 		liste_vitesse_vl_h = []
 		for heure in range(24):
 			vitesse_vl = calc_vitesse_vl(liste_vitesse_brute_annee[mois][heure])
-			liste_vitesse_vl_h.appen(vitesse_vl)
-		liste_vitesse_vl_annee.appen(liste_vitesse_vl_h)
+			liste_vitesse_vl_h.append(vitesse_vl)
+		liste_vitesse_vl_annee.append(liste_vitesse_vl_h)
 	return(liste_vitesse_vl_annee)
 
 def tableau_vitesse_motoinf50(liste_vitesse_brute_annee):
@@ -206,49 +206,49 @@ def tableau_vitesse_motoinf50(liste_vitesse_brute_annee):
 	for mois in range(12):
 		liste_vitesse_motoinf50_h = []
 		for heure in range(24):
-			vitesse_motoinf50 = calc_vitesse_motoinf50(liste_vitesse_brute_annee[mois][heure])
-			liste_vitesse_motoinf50_h.appen(vitesse_motoinf50)
-		liste_vitesse_motoinf50_annee.appen(liste_vitesse_motoinf50_h)
+			vitesse_motoinf50 = calc_vit_motoinf50(liste_vitesse_brute_annee[mois][heure])
+			liste_vitesse_motoinf50_h.append(vitesse_motoinf50)
+		liste_vitesse_motoinf50_annee.append(liste_vitesse_motoinf50_h)
 	return(liste_vitesse_motoinf50_annee)
 
-def tableau_vitesse_motosup50(liste_vitesse_brute_annee, tableau_coef_charge, liste_facteur_corect):
+def tableau_vitesse_motosup50(liste_vitesse_brute_annee, tableau_coef_charge, liste_facteur_corect, cat_voie):
 	liste_vitesse_motosup50_annee = []
 	for mois in range(12):
 		liste_vitesse_motosup50_h = []
 		for heure in range(24):
-			vitesse_motosup50 = calc_vitesse_motosup50(liste_vitesse_brute_annee[mois][heure], tableau_coef_charge[mois][heure] * 100, liste_facteur_corect)
-			liste_vitesse_motosup50_h.appen(vitesse_motosup50)
-		liste_vitesse_motosup50_annee.appen(liste_vitesse_motosup50_h)
+			vitesse_motosup50 = calc_vit_motosup50(liste_vitesse_brute_annee[mois][heure], tableau_coef_charge[mois][heure] * 100, liste_facteur_corect, cat_voie)
+			liste_vitesse_motosup50_h.append(vitesse_motosup50)
+		liste_vitesse_motosup50_annee.append(liste_vitesse_motosup50_h)
 	return(liste_vitesse_motosup50_annee)
 
-def tableau_vitesse_PL(liste_vitesse_brute_annee, tableau_coef_charge, liste_facteur_corect):
+def tableau_vitesse_PL(liste_vitesse_brute_annee, tableau_coef_charge, liste_facteur_corect, cat_voie):
 	liste_vitesse_PL_annee = []
 	for mois in range(12):
 		liste_vitesse_PL_h = []
 		for heure in range(24):
-			vitesse_PL = calc_vitesse_PL(liste_vitesse_brute_annee[mois][heure], tableau_coef_charge[mois][heure] * 100, liste_facteur_corect)
-			liste_vitesse_PL_h.appen(vitesse_PL)
-		liste_vitesse_PL_annee.appen(liste_vitesse_PL_h)
+			vitesse_PL = calc_vit_PL(liste_vitesse_brute_annee[mois][heure], tableau_coef_charge[mois][heure] * 100, liste_facteur_corect, cat_voie)
+			liste_vitesse_PL_h.append(vitesse_PL)
+		liste_vitesse_PL_annee.append(liste_vitesse_PL_h)
 	return(liste_vitesse_PL_annee)
 
-def tableau_vitesse_Bus(liste_vitesse_brute_annee, tableau_coef_charge, liste_facteur_corect):
+def tableau_vitesse_Bus(liste_vitesse_brute_annee, tableau_coef_charge, liste_facteur_corect, cat_voie):
 	liste_vitesse_Bus_annee = []
 	for mois in range(12):
 		liste_vitesse_Bus_h = []
 		for heure in range(24):
-			vitesse_Bus = calc_vitesse_Bus(liste_vitesse_brute_annee[mois][heure], tableau_coef_charge[mois][heure] * 100, liste_facteur_corect)
-			liste_vitesse_Bus_h.appen(vitesse_Bus)
-		liste_vitesse_Bus_annee.appen(liste_vitesse_Bus_h)
+			vitesse_Bus = calc_vit_Bus(liste_vitesse_brute_annee[mois][heure], tableau_coef_charge[mois][heure] * 100, liste_facteur_corect, cat_voie)
+			liste_vitesse_Bus_h.append(vitesse_Bus)
+		liste_vitesse_Bus_annee.append(liste_vitesse_Bus_h)
 	return(liste_vitesse_Bus_annee)
 
-def tableau_vitesse_Autocar(liste_vitesse_brute_annee, tableau_coef_charge, liste_facteur_corect):
+def tableau_vitesse_Autocar(liste_vitesse_brute_annee, tableau_coef_charge, liste_facteur_corect, cat_voie):
 	liste_vitesse_Car_annee = []
 	for mois in range(12):
 		liste_vitesse_Car_h = []
 		for heure in range(24):
-			vitesse_Car = calc_vitesse_Car(liste_vitesse_brute_annee[mois][heure], tableau_coef_charge[mois][heure] * 100, liste_facteur_corect)
-			liste_vitesse_Car_h.appen(vitesse_Car)
-		liste_vitesse_Car_annee.appen(liste_vitesse_Car_h)
+			vitesse_Car = calc_vit_Autocar(liste_vitesse_brute_annee[mois][heure], tableau_coef_charge[mois][heure] * 100, liste_facteur_corect, cat_voie)
+			liste_vitesse_Car_h.append(vitesse_Car)
+		liste_vitesse_Car_annee.append(liste_vitesse_Car_h)
 	return(liste_vitesse_Car_annee)
 
 

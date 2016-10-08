@@ -18,7 +18,7 @@ under the License.'''
 from fonctions_vitesse import *
 
 
-def calc_vitesse(TMJA, liste_facteur_corect, Vmax, Coef_route, B, Bbis, Pct_VL, Pct_Vul, prc_PL, Pct_Bus, Pct_Autocar, UnsurCapacite, prof_mensu_PL_DF, prof_horr_PL_DF, prof_mensu_DF, prof_horr_ete_DF, prof_horr_DF, prof_mensu_PL_JO, prof_horr_PL_JO, prof_mensu_JO, prof_horr_ete_JO, prof_horr_JO, nbr_j_an):
+def calc_vitesse(TMJA, liste_facteur_corect, Vmax, Coef_route, B, Bbis, Pct_VL, Pct_Vul, prc_PL, Pct_Bus, Pct_Autocar, UnsurCapacite, prof_mensu_PL_DF, prof_horr_PL_DF, prof_mensu_DF, prof_horr_ete_DF, prof_horr_DF, prof_mensu_PL_JO, prof_horr_PL_JO, prof_mensu_JO, prof_horr_ete_JO, prof_horr_JO, nbr_j_an, cat_voie):
 
 	#on calc le tableau des coefs charge (besoin de 1/capacite), pour JO puis DF	
 	tableau_coef_charge_JO = tableau_coef_charge(TMJA, prof_mensu_PL_JO, prof_horr_PL_JO, prof_mensu_JO, prof_horr_ete_JO, prof_horr_JO, Pct_VL, Pct_Vul, prc_PL, Pct_Bus, Pct_Autocar, UnsurCapacite, nbr_j_an)	
@@ -31,19 +31,19 @@ def calc_vitesse(TMJA, liste_facteur_corect, Vmax, Coef_route, B, Bbis, Pct_VL, 
 		#on calc toutes les autres vitesses JO (jours ouvres)
 	tableau_vitesse_vl_JO = tableau_vitesse_vl(tableau_vitesse_brute_JO)
 	tableau_vitesse_motoinf50_JO = tableau_vitesse_motoinf50(tableau_vitesse_brute_JO)
-	tableau_vitesse_motosup50_JO = tableau_vitesse_motosup50(tableau_vitesse_brute_JO, tableau_coef_charge_JO, liste_facteur_corect)
-	tableau_vitesse_PL_JO = tableau_vitesse_PL(tableau_vitesse_brute_JO, tableau_coef_charge_JO, liste_facteur_corect)
-	tableau_vitesse_Bus_JO = tableau_vitesse_Bus(tableau_vitesse_brute_JO, tableau_coef_charge_JO, liste_facteur_corect)
-	tableau_vitesse_Autocar_JO = tableau_vitesse_Autocar(tableau_vitesse_brute_JO, tableau_coef_charge_JO, liste_facteur_corect)
+	tableau_vitesse_motosup50_JO = tableau_vitesse_motosup50(tableau_vitesse_brute_JO, tableau_coef_charge_JO, liste_facteur_corect, cat_voie)
+	tableau_vitesse_PL_JO = tableau_vitesse_PL(tableau_vitesse_brute_JO, tableau_coef_charge_JO, liste_facteur_corect, cat_voie)
+	tableau_vitesse_Bus_JO = tableau_vitesse_Bus(tableau_vitesse_brute_JO, tableau_coef_charge_JO, liste_facteur_corect, cat_voie)
+	tableau_vitesse_Autocar_JO = tableau_vitesse_Autocar(tableau_vitesse_brute_JO, tableau_coef_charge_JO, liste_facteur_corect, cat_voie)
 	
 		#on calc toutes les autres vitesses DF (dimanches et jours feries)
 	tableau_vitesse_vl_DF = tableau_vitesse_vl(tableau_vitesse_brute_DF)
 	tableau_vitesse_motoinf50_DF = tableau_vitesse_motoinf50(tableau_vitesse_brute_DF)
-	tableau_vitesse_motosup50_DF = tableau_vitesse_motosup50(tableau_vitesse_brute_DF, tableau_coef_charge_DF, liste_facteur_corect)
-	tableau_vitesse_PL_DF = tableau_vitesse_PL(tableau_vitesse_brute_DF, tableau_coef_charge_DF, liste_facteur_corect)
-	tableau_vitesse_Bus_DF = tableau_vitesse_Bus(tableau_vitesse_brute_DF, tableau_coef_charge_DF, liste_facteur_corect)
-	tableau_vitesse_Autocar_DF = tableau_vitesse_Autocar(tableau_vitesse_brute_DF, tableau_coef_charge_DF, liste_facteur_corect)
+	tableau_vitesse_motosup50_DF = tableau_vitesse_motosup50(tableau_vitesse_brute_DF, tableau_coef_charge_DF, liste_facteur_corect, cat_voie)
+	tableau_vitesse_PL_DF = tableau_vitesse_PL(tableau_vitesse_brute_DF, tableau_coef_charge_DF, liste_facteur_corect, cat_voie)
+	tableau_vitesse_Bus_DF = tableau_vitesse_Bus(tableau_vitesse_brute_DF, tableau_coef_charge_DF, liste_facteur_corect, cat_voie)
+	tableau_vitesse_Autocar_DF = tableau_vitesse_Autocar(tableau_vitesse_brute_DF, tableau_coef_charge_DF, liste_facteur_corect, cat_voie)
 
-	toutes_vitesses = {	'vl_JO':tableau_coef_charge_vl_JO , 'vl_DF':tableau_coef_charge_vl_DF , 'motoinf50_JO':tableau_vitesse_motoinf50_JO , 'motoinf50_DF':tableau_vitesse_motoinf50_DF , 'motosup50_JO':tableau_vitesse_motosup50_JO , 'motosup50_DF':tableau_vitesse_motosup50_DF , 'PL_JO':tableau_vitesse_PL_JO , 'PL_DF':tableau_vitesse_PL_DF , 'Bus_JO':tableau_vitesse_Bus_JO , 'Bus_DF':tableau_vitesse_Bus_DF, 'Autocar_JO':tableau_vitesse_Autocar_JO , 'Autocar_DF':tableau_vitesse_Autocar_DF }
+	toutes_vitesses = {	'vl_JO':tableau_vitesse_vl_JO , 'vl_DF':tableau_vitesse_vl_DF , 'motoinf50_JO':tableau_vitesse_motoinf50_JO , 'motoinf50_DF':tableau_vitesse_motoinf50_DF , 'motosup50_JO':tableau_vitesse_motosup50_JO , 'motosup50_DF':tableau_vitesse_motosup50_DF , 'PL_JO':tableau_vitesse_PL_JO , 'PL_DF':tableau_vitesse_PL_DF , 'Bus_JO':tableau_vitesse_Bus_JO , 'Bus_DF':tableau_vitesse_Bus_DF, 'Autocar_JO':tableau_vitesse_Autocar_JO , 'Autocar_DF':tableau_vitesse_Autocar_DF }
 
 	return(toutes_vitesses)
