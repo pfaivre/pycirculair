@@ -76,10 +76,10 @@ def imp_data_vitesse(ligne):
 	prc_Bus = 0.005
 	prc_Autocar = 0.05
 
-	TMJA = 1000
-	capacite = 1080
+	TMJA = 1200
+	capacite = 100.0
 	cat_voie = 2
-	UnsurCapacite = 1 / capacite
+	UnsurCapacite = float(1.0 / capacite)
 	B = calc_B(cat_voie)
 	Vmax = calc_vmax(cat_voie)
 

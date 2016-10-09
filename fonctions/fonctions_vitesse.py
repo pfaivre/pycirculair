@@ -35,7 +35,8 @@ def Calc_nombre_PL_h(TMJA , nbr_j_an , val_profil_mensu_PL, val_profil_horraire_
 #####################################################################################
 
 def calc_coef_charge(Nombre_VUL_h, Nombre_VP_h, Nombre_PL_h, Nombre_BUS_h, Nombre_AUTOCAR_h, UnsurCapacite):
-	Coef_charge = ((Nombre_VUL_h + Nombre_VP_h + (Nombre_PL_h + Nombre_BUS_h + Nombre_AUTOCAR_h)*2 ) * UnsurCapacite)   ##coef de charge a partir duquel on calculera la vitesse de chaque categorie
+	##coef de charge a partir duquel on calculera la vitesse de chaque categorie
+	Coef_charge = ((Nombre_VUL_h + Nombre_VP_h + (Nombre_PL_h + Nombre_BUS_h + Nombre_AUTOCAR_h)*2 ) * UnsurCapacite)
 	return(Coef_charge)
 
 def calc_taux_congestion(Coef_charge):
@@ -166,7 +167,6 @@ def tableau_coef_charge(TMJA, prof_mensu_PL, prof_horr_PL, prof_mensu, prof_horr
 
 			nbr_pl = Calc_nombre_PL_h(TMJA , nbr_j_an , val_profil_mensu_PL, val_profil_horraire_PL, prc_PL)
 			nbr_vref = Calc_nbr_vref_h(mois, TMJA, nbr_j_an, val_profil_mensu, val_profil_horraire_ete, val_profil_horraire)
-			
 			Nombre_VL_h = nbr_vref * Pct_VL
 			Nombre_VUL_h= Nombre_VL_h * Pct_Vul
 			Nombre_VP_h = Nombre_VL_h - Nombre_VUL_h
